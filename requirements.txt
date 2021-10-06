@@ -1,0 +1,6 @@
+Flask
+flask-cors
+flask_oidc
+psycopg2-binary 
+tenacity
+requests
