@@ -1,11 +1,14 @@
 import atexit
+import json
+import jwt
 import logging
 import os
+import requests
 import sys
+
 from persistence.ImageStore import ImageStore
-from flask import Flask, make_response, jsonify, abort
+from flask import Flask, request, make_response, jsonify, abort
 from flask_cors import CORS
-from flask_oidc import OpenIDConnect
 from controller.Controller import Controller
 from persistence.Database import Database
 from scraper.Scraper import Scraper
@@ -34,19 +37,30 @@ scraper_daemon = ScraperThread(stop_event, scraper)
 scraper_daemon.daemon = True
 scraper_daemon.start()
 
-app.config.update({
-    'OIDC_CLIENT_SECRETS': 'client_secrets.json',
-    'OIDC_OPENID_REALM': 'how2die',
-    'OIDC_INTROSPECTION_AUTH_METHOD': 'bearer',
-    'OIDC-SCOPES': ['chan']
-})
-app.secret_key = "123"
+def _load_public_key():
+    response = requests.get('https://auth.how2die.com/auth/realms/how2die/')
+    json_response = json.loads(response.content)
+    return json_response["public_key"]
 
-oidc = OpenIDConnect(app)
+PUBLIC_KEY = "-----BEGIN PUBLIC KEY-----\n" + _load_public_key() + "\n-----END PUBLIC KEY-----"
+
+def _authorize(headers):
+    global PUBLIC_KEY
+    if "Authorization" not in headers:
+        abort(401)
+
+    authorization_header = headers["Authorization"]
+    if not authorization_header.startswith("Bearer "):
+        abort(401)
+    
+    token = authorization_header[7:]
+    decoded_token = jwt.decode(token, PUBLIC_KEY, audience="account", algorithms=['RS256'])
+    if not "chan" in decoded_token["realm_access"]["roles"]:
+        abort(403)
 
 @app.route('/api/changrid/images/<comment_id>', methods=['GET'])
-@oidc.accept_token(require_token=True, scopes_required=['chan'])
 def get_chan_image(comment_id):
+    _authorize(request.headers)
     image = controller.get_chan_image(comment_id)
     if image is None:
         abort(404)
@@ -60,8 +74,8 @@ def get_chan_image(comment_id):
 
 
 @app.route('/api/changrid/thumbs/<position>', methods=['GET'])
-@oidc.accept_token(require_token=True, scopes_required=['chan'])
 def get_chan_thumbnail(position):
+    _authorize(request.headers)
     thumbnail = controller.get_chan_thumbnail(position)
     return {
         "image": thumbnail["image"],
@@ -77,8 +91,8 @@ def add_to_blacklist(comment_id):
 
 
 @app.route('/api/favorites/<comment_id>', methods=['POST'])
-@oidc.accept_token(require_token=True, scopes_required=['chan'])
 def add_to_favorites(comment_id):
+    _authorize(request.headers)
     # TODO: Get actual user id
     success = controller.add_to_favorites(comment_id, 123456)
     if success:
@@ -88,8 +102,8 @@ def add_to_favorites(comment_id):
 
 
 @app.route('/api/favorites/thumbs', methods=['GET'])
-@oidc.accept_token(require_token=True, scopes_required=['chan'])
 def get_favorites_thumbnails():
+    _authorize(request.headers)
     favorites = controller.get_favorites_thumbnails()
     response_list = list(map(lambda f: {
         "commentId": f["comment_id"],
@@ -99,8 +113,8 @@ def get_favorites_thumbnails():
 
 
 @app.route('/api/favorites/images/<comment_id>', methods=['GET'])
-@oidc.accept_token(require_token=True, scopes_required=['chan'])
 def get_favorite_image(comment_id):
+    _authorize(request.headers)
     favorite_image = controller.get_favorite_image(comment_id)
     if favorite_image is None:
         abort(404)
@@ -112,8 +126,8 @@ def get_favorite_image(comment_id):
 
 
 @app.route('/api/favorites/images/<comment_id>', methods=['DELETE'])
-@oidc.accept_token(require_token=True, scopes_required=['chan'])
 def delete_favorite_image(comment_id):
+    _authorize(request.headers)
     controller.delete_favorite_image(comment_id)
     return make_response(jsonify(), 204)
 

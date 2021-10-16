@@ -1,6 +1,6 @@
 Flask
 flask-cors
-flask_oidc
+PyJWT
 psycopg2-binary 
 tenacity
 requests
