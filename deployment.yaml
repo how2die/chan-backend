@@ -27,13 +27,13 @@ spec:
     spec:
       containers:
         - name: chan-backend
-          image: how2die/chan-backend
+          image: docker.io/how2die/chan-backend
           ports:
             - containerPort: 5000
               name: http-port
           volumeMounts:
-            - name: chan-backend-folder
-              mountPath: /
+          - name: chan-backend-folder
+            mountPath: /var/chan
           env:
           - name: DB_HOST
             value: "postgres"
@@ -50,6 +50,6 @@ spec:
                 name: db-secret
                 key: password
       volumes:
-        - name: chan-backend-folder
-          persistentVolumeClaim:
-            claimName: chan-backend-pvc
+      - name: chan-backend-folder
+        persistentVolumeClaim:
+          claimName: chan-backend-pvc

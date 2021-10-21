@@ -10,15 +10,15 @@ CREATE TABLE changrid (
   PRIMARY KEY (position)
 );
 
-INSERT INTO changrid (position, image, thumb, commentid, summary, last_seen) VALUES (0, '', '', 0, '', TIMESTAMP '2000-01-01');
-INSERT INTO changrid (position, image, thumb, commentid, summary, last_seen) VALUES (1, '', '', 0, '', TIMESTAMP '2000-01-01');
-INSERT INTO changrid (position, image, thumb, commentid, summary, last_seen) VALUES (2, '', '', 0, '', TIMESTAMP '2000-01-01');
-INSERT INTO changrid (position, image, thumb, commentid, summary, last_seen) VALUES (3, '', '', 0, '', TIMESTAMP '2000-01-01');
-INSERT INTO changrid (position, image, thumb, commentid, summary, last_seen) VALUES (4, '', '', 0, '', TIMESTAMP '2000-01-01');
-INSERT INTO changrid (position, image, thumb, commentid, summary, last_seen) VALUES (5, '', '', 0, '', TIMESTAMP '2000-01-01');
-INSERT INTO changrid (position, image, thumb, commentid, summary, last_seen) VALUES (6, '', '', 0, '', TIMESTAMP '2000-01-01');
-INSERT INTO changrid (position, image, thumb, commentid, summary, last_seen) VALUES (7, '', '', 0, '', TIMESTAMP '2000-01-01');
-INSERT INTO changrid (position, image, thumb, commentid, summary, last_seen) VALUES (8, '', '', 0, '', TIMESTAMP '2000-01-01');
+INSERT INTO changrid (position, image, thumb, commentid, summary, last_seen) VALUES (0, '', '', 0, '{}', TIMESTAMP '2000-01-01');
+INSERT INTO changrid (position, image, thumb, commentid, summary, last_seen) VALUES (1, '', '', 0, '{}', TIMESTAMP '2000-01-01');
+INSERT INTO changrid (position, image, thumb, commentid, summary, last_seen) VALUES (2, '', '', 0, '{}', TIMESTAMP '2000-01-01');
+INSERT INTO changrid (position, image, thumb, commentid, summary, last_seen) VALUES (3, '', '', 0, '{}', TIMESTAMP '2000-01-01');
+INSERT INTO changrid (position, image, thumb, commentid, summary, last_seen) VALUES (4, '', '', 0, '{}', TIMESTAMP '2000-01-01');
+INSERT INTO changrid (position, image, thumb, commentid, summary, last_seen) VALUES (5, '', '', 0, '{}', TIMESTAMP '2000-01-01');
+INSERT INTO changrid (position, image, thumb, commentid, summary, last_seen) VALUES (6, '', '', 0, '{}', TIMESTAMP '2000-01-01');
+INSERT INTO changrid (position, image, thumb, commentid, summary, last_seen) VALUES (7, '', '', 0, '{}', TIMESTAMP '2000-01-01');
+INSERT INTO changrid (position, image, thumb, commentid, summary, last_seen) VALUES (8, '', '', 0, '{}', TIMESTAMP '2000-01-01');
 
 CREATE TABLE chanfavs (
   commentid INT NOT NULL,

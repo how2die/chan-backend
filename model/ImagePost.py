@@ -10,4 +10,6 @@ class ImagePost:
 		self.last_seen = last_seen
 
 	def comments(self):
+                if not 'replies' in self.summary:
+                    return []
 		return [reply['com'] if 'com' in reply else "" for reply in self.summary['replies']]
