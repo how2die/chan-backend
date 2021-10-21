@@ -58,7 +58,7 @@ def _authorize(headers):
     if not "chan" in decoded_token["realm_access"]["roles"]:
         abort(403)
 
-@app.route('/api/changrid/images/<comment_id>', methods=['GET'])
+@app.route('/chan/api/changrid/images/<comment_id>', methods=['GET'])
 def get_chan_image(comment_id):
     _authorize(request.headers)
     image = controller.get_chan_image(comment_id)
@@ -73,7 +73,7 @@ def get_chan_image(comment_id):
         }
 
 
-@app.route('/api/changrid/thumbs/<position>', methods=['GET'])
+@app.route('/chan/api/changrid/thumbs/<position>', methods=['GET'])
 def get_chan_thumbnail(position):
     _authorize(request.headers)
     thumbnail = controller.get_chan_thumbnail(position)
@@ -84,13 +84,13 @@ def get_chan_thumbnail(position):
     }
 
 
-@app.route('/api/blacklist/<comment_id>', methods=['POST'])
+@app.route('/chan/api/blacklist/<comment_id>', methods=['POST'])
 def add_to_blacklist(comment_id):
     controller.add_to_blacklist(comment_id)
     return make_response(jsonify(), 201)
 
 
-@app.route('/api/favorites/<comment_id>', methods=['POST'])
+@app.route('/chan/api/favorites/<comment_id>', methods=['POST'])
 def add_to_favorites(comment_id):
     _authorize(request.headers)
     # TODO: Get actual user id
@@ -101,7 +101,7 @@ def add_to_favorites(comment_id):
         abort(404)
 
 
-@app.route('/api/favorites/thumbs', methods=['GET'])
+@app.route('/chan/api/favorites/thumbs', methods=['GET'])
 def get_favorites_thumbnails():
     _authorize(request.headers)
     favorites = controller.get_favorites_thumbnails()
@@ -112,7 +112,7 @@ def get_favorites_thumbnails():
     return jsonify(response_list)
 
 
-@app.route('/api/favorites/images/<comment_id>', methods=['GET'])
+@app.route('/chan/api/favorites/images/<comment_id>', methods=['GET'])
 def get_favorite_image(comment_id):
     _authorize(request.headers)
     favorite_image = controller.get_favorite_image(comment_id)
@@ -125,7 +125,7 @@ def get_favorite_image(comment_id):
         }
 
 
-@app.route('/api/favorites/images/<comment_id>', methods=['DELETE'])
+@app.route('/chan/api/favorites/images/<comment_id>', methods=['DELETE'])
 def delete_favorite_image(comment_id):
     _authorize(request.headers)
     controller.delete_favorite_image(comment_id)

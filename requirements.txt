@@ -1,6 +1,7 @@
 Flask
 flask-cors
 PyJWT
+PyJWT[crypto]
 psycopg2-binary 
 tenacity
 requests
