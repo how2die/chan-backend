@@ -37,6 +37,8 @@ spec:
           env:
           - name: DB_HOST
             value: "postgres"
+          - name: DB_PORT
+            value: 5432
           - name: DB_NAME
             value: "chan"
           - name: DB_USER
@@ -49,6 +51,8 @@ spec:
               secretKeyRef:
                 name: db-secret
                 key: password
+          - name: AUTH_HOST
+            value: "https://auth.how2die.com"
       volumes:
       - name: chan-backend-folder
         persistentVolumeClaim:

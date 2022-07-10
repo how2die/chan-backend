@@ -1,7 +1,8 @@
-Flask
-flask-cors
+fastapi
+psycopg2-binary 
 PyJWT
 PyJWT[crypto]
-psycopg2-binary 
+python-dotenv
 tenacity
 requests
+uvicorn[standard]

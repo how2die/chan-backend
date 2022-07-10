@@ -17,7 +17,7 @@ class Controller:
             return None
         filename = grid_item[0]
         summary = grid_item[3]
-        liked = grid_item[4]
+        liked = grid_item[4] == 1
         encoded_image = self.dl_folder.get_image(filename)
         if encoded_image is None:
             return None
@@ -69,10 +69,11 @@ class Controller:
         if grid_item is None:
             return None
         filename = grid_item[0]
+        summary = grid_item[3]
         encoded_image = self.favs_folder.get_image(filename)
         if encoded_image is None:
             return None
-        return {"image": encoded_image, "filename": filename}
+        return {"image": encoded_image, "filename": filename, "summary": summary}
 
     def delete_favorite_image(self, comment_id):
         grid_item = self.db.get_favorite(comment_id)
